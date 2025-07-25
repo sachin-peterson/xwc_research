@@ -9,7 +9,7 @@ mod mgs_max; use crate::mgs_max::{mgs_max_seq, mgs_max_par};
 mod mgs_min; use crate::mgs_min::{mgs_min_seq, mgs_min_par};
 
 mod partial_lll; use crate::partial_lll::{plll_seq, plll_par};
-mod lll_permutation;
+mod lll_permutation; use crate::lll_permutation::{lllp_seq, lllp_par};
 
 mod se_search; use crate::se_search::{se_search, se_search_mod};
 mod ch_search; use crate::ch_search::{ch_search, ch_search_mod};
@@ -26,6 +26,8 @@ fn main() {
     let mut Q6 = A.clone();
     let mut Q7 = A.clone();
     let mut Q8 = A.clone();
+    let mut Q9 = A.clone();
+    let mut Q10 = A.clone();
 
     // Test sequential QR
     {
@@ -81,25 +83,25 @@ fn main() {
         println!("Duration: {:?}\n", duration);
     }
 
-    // // Test sequential PLLL
-    // {
-    //     let mut y1 = vec![0.0; 4];
-    //     let start = Instant::now();
-    //     plll_seq(&mut Q7, &mut y1);
-    //     let duration = start.elapsed();
-    //     println!("Sequential PLLL:");
-    //     println!("Duration: {:?}\n", duration);
-    // }
+    // Test sequential PLLL
+    {
+        let mut y1 = vec![0.0; 100];
+        let start = Instant::now();
+        plll_seq(&mut Q7, &mut y1);
+        let duration = start.elapsed();
+        println!("Sequential PLLL:");
+        println!("Duration: {:?}\n", duration);
+    }
 
-    // // Test parallel PLLL
-    // {
-    //     let mut y2 = vec![0.0; 4];
-    //     let start = Instant::now();
-    //     plll_par(&mut Q8, &mut y2);
-    //     let duration = start.elapsed();
-    //     println!("Parallel PLLL:");
-    //     println!("Duration: {:?}\n", duration);
-    // }
+    // Test parallel PLLL
+    {
+        let mut y2 = vec![0.0; 100];
+        let start = Instant::now();
+        plll_par(&mut Q8, &mut y2);
+        let duration = start.elapsed();
+        println!("Parallel PLLL:");
+        println!("Duration: {:?}\n", duration);
+    }
 
     // Test SE search
     {
@@ -169,12 +171,22 @@ fn main() {
 
     // Test sequential LLL-P
     {
-
+        let mut y3 = vec![0.0; 100];
+        let start = Instant::now();
+        lllp_seq(&mut Q9, &mut y3);
+        let duration = start.elapsed();
+        println!("Sequential LLL-P:");
+        println!("Duration: {:?}\n", duration);
     }
 
     // Test parallel LLL-P
     {
-
+        let mut y4 = vec![0.0; 100];
+        let start = Instant::now();
+        lllp_par(&mut Q10, &mut y4);
+        let duration = start.elapsed();
+        println!("Parallel LLL-P:");
+        println!("Duration: {:?}\n", duration);
     }
 
     // Test all-swap sequential PLLL
