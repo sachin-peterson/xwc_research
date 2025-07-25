@@ -3,9 +3,7 @@ use core::f64;
 /// Schnorr-Euchner Search Algorithm
 /// Input: R (n x n, upper triangular), y_bar (n x 1)
 /// Output: z_ils (n x 1, integer)
-/// Note: 
 
-/// ORIGINAL
 pub fn se_search(R: &Vec<Vec<f64>>, y_bar: &Vec<f64>) -> Vec<i32> {
     // Matrix sizing
     let n = R.len();
@@ -90,7 +88,7 @@ pub fn se_search(R: &Vec<Vec<f64>>, y_bar: &Vec<f64>) -> Vec<i32> {
 
                 // Update and check
                 i += 1;
-                if i == n {
+                if i == n-1 {
                     return z_ils;    
                 }
 
@@ -103,7 +101,12 @@ pub fn se_search(R: &Vec<Vec<f64>>, y_bar: &Vec<f64>) -> Vec<i32> {
     }
 }
 
-/// MODIFIED
+
+/// Modified Schnorr-Euchner Search Algorithm
+/// Input: R (n x n, upper triangular), y_bar (n x 1), z_approx (n x 1, integer), 
+/// delta_approx (n x 1, integer), T (usize), zeta1 (bool), zeta2 (bool)
+/// Output: z (n x 1, integer), delta (n x 1, integer), T (usize)
+
 pub fn se_search_mod(R: &Vec<Vec<f64>>, y_bar: &Vec<f64>, z_approx: &Vec<i32>, delta_approx: &Vec<i32>, T: usize, zeta1: bool, zeta2: bool) -> (Vec<i32>, Vec<i32>, usize) {
     // Matrix sizing
     let n = R.len();

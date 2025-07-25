@@ -9,8 +9,10 @@ mod mgs_max; use crate::mgs_max::{mgs_max_seq, mgs_max_par};
 mod mgs_min; use crate::mgs_min::{mgs_min_seq, mgs_min_par};
 
 mod partial_lll; use crate::partial_lll::{plll_seq, plll_par};
+mod lll_permutation;
 
 mod se_search; use crate::se_search::{se_search, se_search_mod};
+mod ch_search; use crate::ch_search::{ch_search, ch_search_mod};
 
 
 fn main() {
@@ -79,27 +81,27 @@ fn main() {
         println!("Duration: {:?}\n", duration);
     }
 
-    // Test sequential PLLL
-    {
-        let mut y1 = vec![0.0; 4];
-        let start = Instant::now();
-        plll_seq(&mut Q7, &mut y1);
-        let duration = start.elapsed();
-        println!("Sequential PLLL:");
-        println!("Duration: {:?}\n", duration);
-    }
+    // // Test sequential PLLL
+    // {
+    //     let mut y1 = vec![0.0; 4];
+    //     let start = Instant::now();
+    //     plll_seq(&mut Q7, &mut y1);
+    //     let duration = start.elapsed();
+    //     println!("Sequential PLLL:");
+    //     println!("Duration: {:?}\n", duration);
+    // }
 
-    // Test parallel PLLL
-    {
-        let mut y2 = vec![0.0; 4];
-        let start = Instant::now();
-        plll_par(&mut Q8, &mut y2);
-        let duration = start.elapsed();
-        println!("Parallel PLLL:");
-        println!("Duration: {:?}\n", duration);
-    }
+    // // Test parallel PLLL
+    // {
+    //     let mut y2 = vec![0.0; 4];
+    //     let start = Instant::now();
+    //     plll_par(&mut Q8, &mut y2);
+    //     let duration = start.elapsed();
+    //     println!("Parallel PLLL:");
+    //     println!("Duration: {:?}\n", duration);
+    // }
 
-    // Test Schnorr-Euchner
+    // Test SE search
     {
         let n = 1000;
         let R = generate_ut_matrix(n);
@@ -113,7 +115,7 @@ fn main() {
         println!("Duration: {:?}\n", duration);
     }
 
-    // Test modified Schnorr-Euchner
+    // Test modified SE
     {
         let n = 1000;
         let R = generate_ut_matrix(n);
@@ -129,5 +131,69 @@ fn main() {
         println!("Duration: {:?}\n", duration);
     }
 
-    // 
+    // Test CH search
+    {
+        let n = 1000;
+        let R = generate_ut_matrix(n);
+        let z = vec![1; n];
+        let y_bar = generate_y_bar(&R, &z);
+        let l_bar = vec![-5; n];
+        let u_bar = vec![5; n];
+
+        let start = Instant::now();
+        ch_search(&R, &y_bar, &l_bar, &u_bar);
+        let duration = start.elapsed();
+        println!("CH SEARCH, unmodified:");
+        println!("Duration: {:?}\n", duration);
+    }
+
+    // Test modified CH
+    {
+        let n = 1000;
+        let R = generate_ut_matrix(n);
+        let z = vec![1; n];
+        let y_bar = generate_y_bar(&R, &z);
+        let l_bar = vec![-5; n];
+        let u_bar = vec![5; n];
+        let z_approx = vec![0; n];
+        let delta_approx = vec![0; n];
+        let lb_init = vec![0; n];
+        let ub_init = vec![0; n];
+
+        let start = Instant::now();
+        ch_search_mod(&R, &y_bar, &l_bar, &u_bar, &z_approx, &delta_approx, 1, true, false, &lb_init, &ub_init);
+        let duration = start.elapsed();
+        println!("CH SEARCH, modified:");
+        println!("Duration: {:?}\n", duration);
+    }
+
+    // Test sequential LLL-P
+    {
+
+    }
+
+    // Test parallel LLL-P
+    {
+
+    }
+
+    // Test all-swap sequential PLLL
+    {
+
+    }
+
+    // Test all-swap parallel PLLL
+    {
+        
+    }
+
+    // Test all-swap sequential LLL-P
+    {
+
+    }
+
+    // Test all-swap parallel LLL-P
+    {
+
+    }
 }
